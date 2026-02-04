@@ -1,0 +1,21 @@
+/* .container {
+  display: grid;
+  
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr;
+} */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 25%;
+  right: 0;
+  z-index: 999;
+  /* grid-column: 2/3; */
+}
+
+.widthTop {
+  height: 75px;
+}
+.widthleft {
+  width: 38%;
+}
