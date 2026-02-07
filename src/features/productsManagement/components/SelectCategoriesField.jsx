@@ -34,7 +34,7 @@ export default function SelectCategoriesField({ control, errors }) {
         <>
           <InputGroup
             label={"product category"}
-            groupStyle={{ width: "md:w-1/2 w-full" }}
+            inputGroupStyle="md:w-1/2 w-full"
             errors={errors}
             fieldName={"category_id"}
           >

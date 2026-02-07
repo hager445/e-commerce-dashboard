@@ -6,7 +6,7 @@ export default function InputGroup({
   label,
   inputType,
   placeholder,
-  groupStyle,
+  inputGroupStyle,
   children,
   register,
   fieldName,
@@ -14,7 +14,7 @@ export default function InputGroup({
   errors,
 }) {
   return (
-    <div className={`mb-6 px-3 ${groupStyle?.width}`}>
+    <div className={`mb-6 px-3 ${inputGroupStyle}`}>
       <label className="font-bold text-left block ps-2 text-black mb-1 capitalize">
         {label} <span className="text-red-500">*</span>
       </label>

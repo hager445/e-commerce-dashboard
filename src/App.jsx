@@ -6,6 +6,7 @@ import DisplayProducts from "./features/productsManagement/components/DisplayPro
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AddProducts from "./features/productsManagement/components/AddProducts";
 import Register from "./features/user-management/components/Register";
+import Login from "./features/user-management/components/Login";
 
 // notes :
 //1. Component-Based Routing (Old/Traditional Way)
@@ -30,6 +31,7 @@ import Register from "./features/user-management/components/Register";
 // ]);
 const routes = createBrowserRouter([
   { path: "", element: <Register /> },
+  { path: "login", element: <Login /> },
   {
     path: "",
     element: <Layout />,

@@ -1,112 +1,144 @@
 import Form from "@/ui/Form";
 import FormGroup from "@/ui/FormGroup";
 import InputGroup from "@/ui/InputGroup";
-import React from "react";
-import { userRegisterValidation } from "../validation/userValidationSchema";
 import { useForm } from "react-hook-form";
-import ControllerUi from "@/ui/ControllerUi";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import ButtonUi from "@/ui/ButtonUi";
+import FormTitle from "@/ui/FormTitle";
+import { NavLink, useNavigate } from "react-router-dom";
+
+import { registerFields } from "@/utils/forms/registerFields";
+import { registerUser } from "@/services/apiUsers";
+import TermsAcceptedBox from "../ui/TermsAcceptedBox";
+import { userRegisterValidation } from "../validation/userValidationSchema";
+
+import { displayError } from "@/utils/displayError";
+import { displaySuccess } from "@/utils/displaySuccess";
+import { formatErrors } from "@/helpers/formatErrors";
+
+import DisplayToastr from "@/ui/DisplayToastr";
+import { useEffect } from "react";
+
+// timeout server problem , the operation ddint completed or no response
+// لو response = 401
+// → اعملي Logout تلقائي
+// → Redirect للـ Login
+// → رسالة بسيطة:
+// "Session expired, please login again"
+// ========================================
+// No => Admin Self-Register
+// يا اما بيتعمل يدوي اول مرة من الباك اند او بيتبعتله دعوة
 export default function Register() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    control,
-    formState: { errors },
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm();
-  return (
-    <div className="w-screen h-screen flex justify-center items-center">
-      <Form formStyle={"w-[50%]"}>
-        <FormGroup formGroupStyle={"w-full"}>
-          {/* name */}
-          <InputGroup
-            label={"user name"}
-            groupStyle={{ width: " w-full" }}
-            placeholder={"Enter User Name"}
-            inputType={"text"}
-            fieldName={"name"}
-            validation={userRegisterValidation.name}
-            register={register}
-            errors={errors}
-          />
-          {/* email */}
-          <InputGroup
-            label={"user email"}
-            groupStyle={{ width: " w-full" }}
-            placeholder={"Enter User Email"}
-            inputType={"text"}
-            fieldName={"email"}
-            validation={userRegisterValidation.email}
-            register={register}
-            errors={errors}
-          />
-          {/* password */}
-          <InputGroup
-            label={"user password"}
-            groupStyle={{ width: " w-full" }}
-            placeholder={"Enter User password"}
-            inputType={"text"}
-            fieldName={"password"}
-            validation={userRegisterValidation.password}
-            register={register}
-            errors={errors}
-          />
-          {/* confirm password */}
-          <InputGroup
-            label={"confirm password"}
-            groupStyle={{ width: " w-full" }}
-            placeholder={"Enter User Password again"}
-            inputType={"text"}
-            fieldName={"confirmPassword"}
-            validation={userRegisterValidation.confirmPassword}
-            register={register}
-            errors={errors}
-          />
-          {/* role */}
-          <ControllerUi
-            controllerName="role"
-            control={control}
-            rules={userRegisterValidation.role}
-            render={({ field }) => (
-              <>
-                <InputGroup
-                  label={"user role"}
-                  groupStyle={{ width: "w-full" }}
-                  errors={errors}
-                  fieldName={"role"}
-                >
-                  <Select
-                    value={field.value}
-                    onValueChange={field.onChange}
-                    className="bg-white border border-gray-100 rounded-lg px-4 py-2 w-full h-20 focus-visible:outline-none! focus-visible:ring-0!"
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select a User Role" />
-                    </SelectTrigger>
+  async function onSubmit(data) {
+    console.log(data);
+    // أي .then() أو .catch() بيرجع Promise جديد
 
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Roles</SelectLabel>
-                        <SelectItem value="ADMIN">Admin</SelectItem>
-                        <SelectItem value="USER">User</SelectItem>
-                        <SelectItem value="CUSTOMER">Customer</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </InputGroup>
-                {/* {fieldState.error && <Error error={fieldState.error} />} */}
-              </>
+    return registerUser(data)
+      .then((data) => {
+        console.log(data);
+        displaySuccess("you have been registered successfully! please login");
+      })
+      .catch((error) => {
+        const errorMsg = formatErrors(error);
+        displayError(errorMsg);
+        // .catch() بدون throw
+        // ➜ يحوّل الـ rejected promise إلى fulfilled
+        // so that if we want react hook to know that the server returns error we have to throw that error
+        throw error;
+      });
+  }
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      const timer = setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isSubmitSuccessful, navigate]);
+  return (
+    <>
+      <DisplayToastr />
+      <div className="flex justify-center items-center py-5">
+        <Form
+          formStyle="w-[90%] sm:w-[70%] md:w-[60%] lg:w-[50%]"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <FormGroup formGroupStyle="w-full">
+            {/* form error message  */}
+            {Object.keys(errors).length > 0 && (
+              <div className="p-4 mb-4 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-sm text-red-800">
+                  Please fix the errors below before submitting
+                </p>
+              </div>
             )}
-          />
-        </FormGroup>
-      </Form>
-    </div>
+            {/* title */}
+
+            <FormTitle title="Create your account">
+              <span className="text-sm text-gray-500">
+                Enter your personal details to create account
+              </span>
+            </FormTitle>
+            {registerFields.map((field) => (
+              <InputGroup
+                key={field.name}
+                label={field.label}
+                inputGroupStyle="w-full"
+                placeholder={field.placeholder}
+                inputType={field.type}
+                fieldName={field.name}
+                validation={field.validation}
+                register={register}
+                errors={errors}
+              />
+            ))}
+            {/* user roles permissions */}
+            {/* <InputGroup
+              label="Role"
+              value="USER"
+              readOnly={true}
+              inputGroupStyle="w-full"
+              placeholder="User Role"
+              inputType="text"
+              fieldName="role"
+              validation={userRegisterValidation.role}
+              register={register}
+              errors={errors}
+            /> */}
+            {/* <RoleSelect errors={errors} control={control} /> */}
+
+            <TermsAcceptedBox
+              label="Agree with Privacy Policy"
+              fieldName="accepted_terms"
+              register={register}
+              errors={errors}
+              validation={userRegisterValidation.termsAccepted}
+            />
+
+            <ButtonUi
+              isSubmitting={isSubmitting}
+              isSubmitSuccessful={isSubmitSuccessful}
+              buttonStyle="mx-auto w-full mb-4 mt-8"
+              type="submit"
+              substitutiveText="Creating Your Account!"
+            >
+              Register User
+            </ButtonUi>
+            <span className="mx-auto mt-3 text-sm text-gray-400">
+              You have an account?
+              <NavLink to={"/login"} className="text-gray-800 underline">
+                Login Now
+              </NavLink>
+            </span>
+          </FormGroup>
+        </Form>
+      </div>
+    </>
   );
 }

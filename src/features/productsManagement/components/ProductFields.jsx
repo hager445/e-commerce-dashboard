@@ -37,7 +37,7 @@ export default function ProductFields({ register, errors, control }) {
       {/* stock */}
       <InputGroup
         label={"stock"}
-        groupStyle={{ width: "md:w-1/2 w-full" }}
+        inputGroupStyle="md:w-1/2 w-full"
         placeholder={"How Many items in the stock?"}
         inputType={"number"}
         register={register}
