@@ -10,7 +10,7 @@ import { format } from "date-fns";
 import { ChevronDownIcon } from "lucide-react";
 import Form from "@/ui/Form";
 
-import ProductFields from "./productFields";
+import ProductFields from "./ProductFields";
 
 import { useForm } from "react-hook-form";
 import FormGroup from "@/ui/FormGroup";
