@@ -1,4 +1,4 @@
-export const userRegisterValidation = {
+export const userFieldsValidation = {
   name: {
     required: "Name is required",
     minLength: {
@@ -69,14 +69,14 @@ export const userRegisterValidation = {
     required: "You must accept the terms and conditions",
     validate: (value) => value === true || "You must accept the terms",
   },
+  phone: {
+    required: "Phone number is required",
+    pattern: {
+      value: /^01[0-2,5]\d{8}$/,
+      message: "Please enter a valid Egyptian phone number",
+    },
+  },
 };
-//   phone: {
-//     required: "Phone number is required",
-//     pattern: {
-//       value: /^01[0-2,5]\d{8}$/,
-//       message: "Please enter a valid Egyptian phone number",
-//     },
-//   },
 
 //   role: {
 //     required: "Please select a role",

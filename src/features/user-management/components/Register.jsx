@@ -9,14 +9,18 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { registerFields } from "@/utils/forms/registerFields";
 import { registerUser } from "@/services/apiUsers";
 import TermsAcceptedBox from "../ui/TermsAcceptedBox";
-import { userRegisterValidation } from "../validation/userValidationSchema";
+import { userFieldsValidation } from "../validation/userValidationSchema";
 
 import { displayError } from "@/utils/displayError";
 import { displaySuccess } from "@/utils/displaySuccess";
 import { formatErrors } from "@/helpers/formatErrors";
 
 import DisplayToastr from "@/ui/DisplayToastr";
-import { useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
+import { DialogUi } from "@/ui/DialogUi";
+import SetupUserAvatar from "../ui/SetupUserAvatar";
+import { AuthContext } from "@/contexts/Auth/AuthContext";
+// import SetupUserAvatar from "../ui/SetupUserAvatar";
 
 // timeout server problem , the operation ddint completed or no response
 // لو response = 401
@@ -27,21 +31,29 @@ import { useEffect } from "react";
 // ========================================
 // No => Admin Self-Register
 // يا اما بيتعمل يدوي اول مرة من الباك اند او بيتبعتله دعوة
+// Local state ❌ بيضيع مع أي refresh
+// Global Auth State => context
+// البيانات المهمة تتحط في Global State
 export default function Register() {
   const navigate = useNavigate();
+  const [openDialog, setOpenDialog] = useState(false);
+  const [registeredUser, setRegisteredUser] = useState();
+  // const { loadSession } = useContext(AuthContext);
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm();
   async function onSubmit(data) {
-    console.log(data);
     // أي .then() أو .catch() بيرجع Promise جديد
 
     return registerUser(data)
       .then((data) => {
-        console.log(data);
         displaySuccess("you have been registered successfully! please login");
+        setRegisteredUser(data[0]);
+        setOpenDialog(true);
+        // await loadSession();
       })
       .catch((error) => {
         const errorMsg = formatErrors(error);
@@ -52,17 +64,45 @@ export default function Register() {
         throw error;
       });
   }
+
   useEffect(() => {
-    if (isSubmitSuccessful) {
+    console.log(isSubmitSuccessful, openDialog, "checks");
+
+    if (isSubmitSuccessful && !openDialog) {
+      console.log(" supposed to open dia;og");
+
       const timer = setTimeout(() => {
         navigate("/login");
-      }, 3000);
+      }, 2000);
 
       return () => clearTimeout(timer);
     }
-  }, [isSubmitSuccessful, navigate]);
+  }, [isSubmitSuccessful, openDialog, navigate]);
   return (
     <>
+      {openDialog && (
+        <DialogUi
+          open={openDialog}
+          setOpen={setOpenDialog}
+          dialogHeader={{
+            title: (
+              <>
+                Welcome{" "}
+                <span className="capitalize">{registeredUser?.name}</span> set
+                up your profile
+              </>
+            ),
+            description:
+              " Add a profile picture to personalize your account. You can always do this later.",
+          }}
+        >
+          <SetupUserAvatar
+            open={openDialog}
+            setOpen={setOpenDialog}
+            setupInfo={registeredUser}
+          />
+        </DialogUi>
+      )}
       <DisplayToastr />
       <div className="flex justify-center items-center py-5">
         <Form
@@ -118,7 +158,7 @@ export default function Register() {
               fieldName="accepted_terms"
               register={register}
               errors={errors}
-              validation={userRegisterValidation.termsAccepted}
+              validation={userFieldsValidation.termsAccepted}
             />
 
             <ButtonUi

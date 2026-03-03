@@ -12,6 +12,8 @@ export default function InputGroup({
   fieldName,
   validation,
   errors,
+
+  readOnly,
 }) {
   return (
     <div className={`mb-6 px-3 ${inputGroupStyle}`}>
@@ -25,6 +27,7 @@ export default function InputGroup({
           {...register?.(`${fieldName}`, validation)}
           type={inputType}
           name={fieldName}
+          readOnly={readOnly}
           placeholder={placeholder}
           className="bg-white border border-gray-100 rounded-lg px-4 py-2  focus-visible:border-0! focus:outline-none! focus:ring-0!"
         />

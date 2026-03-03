@@ -4,12 +4,11 @@ import uploadImg1 from "../assets/add-image/upload-1.png";
 import uploadImg2 from "../assets/add-image/upload-2.png";
 import { uploadImage } from "@/services/uploadImage";
 import Loader from "./Loader";
-export default function InsertImage({ setValue }) {
+import ImageInput from "./ImageInput";
+export default function ProductImageGroup({ setValue, bucketName }) {
   const [uploading, setUploading] = useState(false);
   const [url, setUrl] = useState("");
-  //   useEffect(() => {
-  //     console.log("coming from supabase", url);
-  //   }, [url]);
+
   return (
     <div className="flex gap-4 w-full">
       <div className="w-[30%] flex items-center justify-center rounded-lg border border-gray-300">
@@ -28,19 +27,11 @@ export default function InsertImage({ setValue }) {
         hover:bg-blue-50/30 
         transition"
       >
-        <input
-          onChange={(e) => {
-            setUploading(true);
-            const file = e.target.files[0];
-            uploadImage(file)
-              .then((url) => {
-                setUrl(url.publicUrl);
-                setValue("image", url.publicUrl);
-              })
-              .finally(() => setUploading(false));
-          }}
-          className="absolute top-0 bottom-0 left-0 right-0 opacity-0 cursor-pointer "
-          type="file"
+        <ImageInput
+          setValue={setValue}
+          setUrl={setUrl}
+          setUploading={setUploading}
+          bucketName={bucketName}
         />
         <p className="text-gray-600 font-medium text-[13px]">
           Drop your image here

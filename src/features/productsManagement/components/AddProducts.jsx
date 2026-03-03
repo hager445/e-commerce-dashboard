@@ -14,7 +14,7 @@ import ProductFields from "./productFields";
 
 import { useForm } from "react-hook-form";
 import FormGroup from "@/ui/FormGroup";
-import InsertImage from "@/ui/insertImage";
+// import productImageGroup from "@/ui/ProductImageGroup";
 import ControllerUi from "@/ui/ControllerUi";
 import { productValidation } from "../validation/product.schema";
 
@@ -22,9 +22,10 @@ import InputGroup from "@/ui/InputGroup";
 import { useEffect, useState } from "react";
 import Loader from "@/ui/Loader";
 import { useAddProduct } from "../hooks/useAddProduct";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 import { displayError } from "@/utils/displayError";
 import DisplayToastr from "@/ui/DisplayToastr";
+import ProductImageGroup from "@/ui/ProductImageGroup";
 // const {
 //   register,           // ← Register inputs
 //   handleSubmit,       // ← Handle form submission
@@ -119,7 +120,10 @@ export default function AddProducts() {
             errors={errors}
             fieldName={"image"}
           >
-            <InsertImage setValue={setValue} />
+            <ProductImageGroup
+              bucketName={"product-images"}
+              setValue={setValue}
+            />
           </InputGroup>
 
           <ControllerUi

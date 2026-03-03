@@ -9,11 +9,12 @@ export default function ButtonUi({
   isSubmitting,
   isSubmitSuccessful,
   substitutiveText,
+  imageUploading,
 }) {
   return (
     <Button
-      disabled={isSubmitting || isSubmitSuccessful}
-      className={`${buttonStyle} cursor-pointer `}
+      disabled={isSubmitting || isSubmitSuccessful || imageUploading}
+      className={`${buttonStyle} cursor-pointer`}
       onClick={onClick}
       type={type}
     >

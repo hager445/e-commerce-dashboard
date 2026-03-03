@@ -186,7 +186,7 @@ import InputGroup from "./InputGroup";
 // useActionData()
 export default function Form({ children, onSubmit, formStyle }) {
   return (
-    <form className={formStyle} onSubmit={onSubmit}>
+    <form className={`w-[90%] ${formStyle}`} onSubmit={onSubmit}>
       {children}
     </form>
   );

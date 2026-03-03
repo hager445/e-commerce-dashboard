@@ -4,6 +4,22 @@ export const formatErrors = (error) => {
   // Handle by error code (most reliable)
   if (error.code) {
     const errorMessages = {
+      // Network issues
+      "Failed to fetch": "No internet connection. Please check your network.",
+
+      // Token issues
+      "JWT expired": "Your session has expired. Please login again.",
+      "invalid JWT": "Invalid session. Please login again.",
+
+      // Supabase specific
+      email_address_invalid: "Please enter a valid email address.",
+      same_password: "New password must be different from current password.",
+      user_not_found: "No account found with this email.",
+
+      // Storage errors (for avatar upload)
+      "Bucket not found": "Storage configuration error.",
+      "exceeded the maximum allowed size":
+        "File is too large. Maximum size is 2MB.",
       // Rate limiting
       over_email_send_rate_limit:
         "Too many registration attempts. Please try again in an hour.",
@@ -12,7 +28,8 @@ export const formatErrors = (error) => {
       user_already_exists:
         "This email is already registered. Please login instead.",
       email_exists: "This email is already registered. Please login instead.",
-      invalid_credentials: "Invalid email or password.",
+      invalid_credentials:
+        "Invalid email or password. please try to register again!",
       email_not_confirmed: "Please check your email and confirm your account.",
       weak_password: "Password must be at least 6 characters long.",
       invalid_email: "Please enter a valid email address.",

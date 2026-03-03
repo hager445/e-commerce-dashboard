@@ -1,13 +1,6 @@
 import { userFieldsValidation } from "@/features/user-management/validation/userValidationSchema";
 
-export const registerFields = [
-  {
-    name: "name",
-    label: "user name",
-    type: "text",
-    placeholder: "Enter User Name",
-    validation: userFieldsValidation.name,
-  },
+export const loginFields = [
   {
     name: "email",
     label: "user email",
@@ -21,12 +14,5 @@ export const registerFields = [
     type: "password",
     placeholder: "Enter User password",
     validation: userFieldsValidation.password,
-  },
-  {
-    name: "confirmPassword",
-    label: "confirm password",
-    type: "password",
-    placeholder: "Enter User Password again",
-    validation: userFieldsValidation.confirmPassword,
   },
 ];
