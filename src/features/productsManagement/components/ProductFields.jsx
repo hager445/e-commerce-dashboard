@@ -2,7 +2,7 @@ import React from "react";
 import { productValidation } from "../validation/product.schema";
 
 import InputGroup from "@/ui/InputGroup";
-import SelectCategoriesField from "./selectCategoriesField";
+import SelectCategoriesField from "./SelectCategoriesField";
 
 export default function ProductFields({ register, errors, control }) {
   return (
