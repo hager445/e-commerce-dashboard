@@ -64,7 +64,7 @@ export default function Login() {
   return (
     <>
       <DisplayToastr />
-      <div className="flex justify-center items-center py-5">
+      <div className="flex justify-center items-center py-5 ">
         <Form
           formStyle="w-[90%] sm:w-[70%] md:w-[60%] lg:w-[50%] "
           onSubmit={handleSubmit(onSubmit)}

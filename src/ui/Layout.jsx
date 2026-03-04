@@ -24,10 +24,10 @@ export default function Layout() {
       </div>
       {/* Main content */}
       <div>
-        <div className={styles.widthTop}></div>
+        {/* <div className={styles.widthTop}></div> */}
         {/* <div className="flex"> */}
         {/* <div className={styles.widthleft}></div> */}
-        <main className="overflow-auto bg-gray-50 h-screen ms-[25%]">
+        <main className="overflow-auto bg-gray-50 h-screen ms-[25%] pt-[70px] ">
           <Outlet />
         </main>
         {/* </div> */}

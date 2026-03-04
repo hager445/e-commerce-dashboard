@@ -31,7 +31,7 @@ export default function Sidebar() {
     }
   }
   return (
-    <aside className="fixed top-0 bottom-0 left-0 right-[75%] w-64 border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+    <aside className="fixed top-0 bottom-0 left-0 right-[75%] w-[25%] border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
       {/* Brand */}
       <div className="flex h-16 items-center px-6 border-b border-gray-200 dark:border-gray-800">
         <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">

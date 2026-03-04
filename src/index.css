@@ -18,6 +18,8 @@
 #root {
   margin: 0 !important;
   padding: 0 !important;
+  max-width: 100vw !important;
+  min-height: 100vh;
 }
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -147,5 +149,6 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* background-color: #fff !important; */
   }
 }

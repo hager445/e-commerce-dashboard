@@ -99,7 +99,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <div className=" me-5">
+        <div>
           <RouterProvider router={routes}></RouterProvider>
         </div>
       </AuthProvider>
